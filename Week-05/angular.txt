@@ -1,0 +1,468 @@
+Angular is a TypeScript-based frontend framework developed by Google for building Single Page Applications (SPAs). Unlike React, which is mainly a UI library, Angular is a complete framework that includes routing, forms, HTTP client, dependency injection, testing, and state management. It follows a component-based architecture, where each part of the UI is built as a reusable component.
+
+Angular Complete Notes + Hands-on (Beginner to Intermediate)
+1. Why Angular?
+
+Angular is used to build:
+
+Enterprise applications
+Banking systems
+Admin dashboards
+ERP software
+CRM systems
+E-commerce websites
+Advantages
+Developed by Google
+Uses TypeScript
+Built-in Routing
+Built-in Forms
+Built-in HTTP Client
+Dependency Injection
+Reusable Components
+Easy testing
+Good for large projects
+2. Prerequisites
+
+Before Angular, know:
+
+HTML
+CSS
+JavaScript (ES6)
+TypeScript
+npm basics
+3. Install Angular
+
+Install Node.js first.
+
+Check installation:
+
+node -v
+npm -v
+
+Install Angular CLI:
+
+npm install -g @angular/cli
+
+Create a project:
+
+ng new myapp
+
+Move inside:
+
+cd myapp
+
+Run:
+
+ng serve
+
+Open:
+
+http://localhost:4200
+4. Project Structure
+myapp
+│
+├── src
+│   ├── app
+│   │   ├── app.component.ts
+│   │   ├── app.component.html
+│   │   ├── app.component.css
+│   │   ├── app.routes.ts
+│   │   └── app.config.ts
+│   │
+│   ├── assets
+│   ├── styles.css
+│   └── main.ts
+│
+├── angular.json
+├── package.json
+└── tsconfig.json
+5. Component
+
+A component controls one part of the UI.
+
+Generate:
+
+ng g c home
+
+home.component.ts
+
+import { Component } from '@angular/core';
+
+@Component({
+selector:'app-home',
+standalone:true,
+templateUrl:'./home.component.html'
+})
+
+export class HomeComponent{
+
+name="Hari"
+
+}
+
+home.component.html
+
+<h1>Hello {{name}}</h1>
+
+Output
+
+Hello Hari
+6. Data Binding
+
+Angular connects data between TypeScript and HTML.
+
+Interpolation
+
+Displays values.
+
+Component
+
+name="Angular"
+
+HTML
+
+{{name}}
+
+Output
+
+Angular
+Property Binding
+
+Component
+
+image="https://picsum.photos/200"
+
+HTML
+
+<img [src]="image">
+Event Binding
+
+Component
+
+count=0
+
+increase(){
+
+this.count++
+
+}
+
+HTML
+
+<button (click)="increase()">Increase</button>
+
+{{count}}
+Two-way Binding
+
+Import FormsModule.
+
+Component
+
+name=""
+
+HTML
+
+<input [(ngModel)]="name">
+
+{{name}}
+
+Typing automatically updates the UI.
+
+7. Directives
+
+Directives change HTML behavior.
+
+ngIf
+show=true
+<div *ngIf="show">
+
+Visible
+
+</div>
+ngFor
+users=["Hari","Rahul","Ravi"]
+<li *ngFor="let user of users">
+
+{{user}}
+
+</li>
+ngClass
+<div [ngClass]="{'red':true}">
+
+Angular
+
+</div>
+ngStyle
+<div [ngStyle]="{'color':'blue'}">
+
+Angular
+
+</div>
+8. Pipes
+
+Transform data without changing the original value.
+
+{{name | uppercase}}
+ANGULAR
+{{name | lowercase}}
+angular
+{{today | date}}
+22 Jul 2026
+{{price | currency}}
+₹500
+9. Routing
+
+Angular loads pages without refreshing.
+
+Generate:
+
+ng g c about
+
+Routes
+
+import { Routes } from '@angular/router';
+
+import { HomeComponent } from './home/home.component';
+
+import { AboutComponent } from './about/about.component';
+
+export const routes:Routes=[
+
+{path:'',component:HomeComponent},
+
+{path:'about',component:AboutComponent}
+
+]
+
+HTML
+
+<a routerLink="/">Home</a>
+
+<a routerLink="/about">About</a>
+
+<router-outlet></router-outlet>
+10. Service
+
+A service contains reusable business logic.
+
+Generate
+
+ng g s services/user
+
+user.service.ts
+
+import { Injectable } from '@angular/core';
+
+@Injectable({
+
+providedIn:'root'
+
+})
+
+export class UserService{
+
+getUsers(){
+
+return [
+
+{name:"Hari"},
+
+{name:"Ravi"}
+
+]
+
+}
+
+}
+
+Component
+
+constructor(private userService:UserService){}
+
+users=this.userService.getUsers()
+11. Dependency Injection
+
+Instead of creating objects manually:
+
+let service=new UserService()
+
+Angular automatically creates it.
+
+constructor(private service:UserService){}
+12. HTTP Client
+
+Angular calls APIs using HttpClient.
+
+Service
+
+constructor(private http:HttpClient){}
+
+getUsers(){
+
+return this.http.get("https://jsonplaceholder.typicode.com/users")
+
+}
+
+Component
+
+users:any=[]
+
+ngOnInit(){
+
+this.service.getUsers().subscribe(data=>{
+
+this.users=data
+
+})
+
+}
+
+HTML
+
+<li *ngFor="let user of users">
+
+{{user.name}}
+
+</li>
+13. Forms
+Template-driven
+<form #f="ngForm">
+
+<input name="username" ngModel>
+
+<button>Submit</button>
+
+</form>
+Reactive Forms
+
+Component
+
+form=new FormGroup({
+
+username:new FormControl(''),
+
+password:new FormControl('')
+
+})
+
+HTML
+
+<form [formGroup]="form">
+
+<input formControlName="username">
+
+<input formControlName="password">
+
+</form>
+14. Parent to Child
+
+Parent
+
+<app-child [name]="username"></app-child>
+
+Child
+
+@Input()
+
+name=""
+15. Child to Parent
+
+Child
+
+@Output()
+
+send=new EventEmitter()
+
+click(){
+
+this.send.emit("Hello")
+
+}
+
+Parent
+
+<app-child (send)="receive($event)">
+
+</app-child>
+16. Lifecycle Hooks
+ngOnInit()
+
+ngOnChanges()
+
+ngAfterViewInit()
+
+ngOnDestroy()
+
+Example
+
+ngOnInit(){
+
+console.log("Loaded")
+
+}
+17. Signals (Angular 17+)
+count=signal(0)
+
+increase(){
+
+this.count.update(v=>v+1)
+
+}
+
+HTML
+
+{{count()}}
+18. Standalone Components
+
+Angular 17+ does not require NgModule.
+
+@Component({
+
+standalone:true,
+
+imports:[CommonModule]
+
+})
+19. CRUD Example
+
+Component
+
+users=[
+
+{name:"Hari"}
+
+]
+
+newUser=""
+
+add(){
+
+this.users.push({
+
+name:this.newUser
+
+})
+
+this.newUser=""
+
+}
+
+HTML
+
+<input [(ngModel)]="newUser">
+
+<button (click)="add()">
+
+Add
+
+</button>
+
+<ul>
+
+<li *ngFor="let user of users">
+
+{{user.name}}
+
+</li>
+
+</ul>
